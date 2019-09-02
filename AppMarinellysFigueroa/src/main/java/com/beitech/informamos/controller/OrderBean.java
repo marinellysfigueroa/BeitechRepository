@@ -3,6 +3,7 @@ package com.beitech.informamos.controller;
 import java.util.Date;
 import java.util.Map;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -104,6 +105,12 @@ public class OrderBean {
 
 	public void  save() {
 		
+		if(total >=0 && !deliveryAddress.equals(""))
+		{
+			
+		
+		
+		
 		Map<String, Object> sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
 		Customer c = (Customer) sessionMap.get("customer");
 
@@ -115,15 +122,11 @@ public class OrderBean {
 		order.setCreationDate(new java.sql.Date(currentDate.getTime()));
 		OrderDAO orderDAO = new OrderDAO();
 		
-		
 		Integer orderId=orderDAO.save(order);
-		
-		
-		//detail order
+	
 		OrderDetail od=new OrderDetail();
 		od.setOrderId(orderId);
 		
-		//Product
 		Product p=new Product();
 		p=ProductDAO.find(productId);
 		od.setProductId(productId);
@@ -131,15 +134,20 @@ public class OrderBean {
 		od.setPrice(p.getPrice());
 		od.setQuantity(quantity);
 		
-		OrderDetailDAO.save(od);
+		//OrderDetailDAO.save(od);
+		}else
+		{
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Contact admin."));
+			
+		}
 		
 	}
 	public void converter()
 	{
 		
 		CalculateTotalValue service = 	new CalculateTotalValueImplService().getCalculateTotalValueImplPort();
-		this.valueConverter=service.total(172100.00, "USD");
-		System.out.println("valueConverter "+this.valueConverter);
+		this.valueConverter=service.total(total, "USD");
 		Map<String, Object> sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
 		sessionMap.put("valueConverter", valueConverter);
 		

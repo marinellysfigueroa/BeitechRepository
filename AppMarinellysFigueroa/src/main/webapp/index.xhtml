@@ -16,9 +16,8 @@
 		<h2 style="margin-top: 0">
 			Cliente:
 			<h:outputText value="#{customer.name}" style="font-weight: bold" />
-			<p:commandButton action="#{customerBean.exit}" id="exit"
-				style="margin-right:20px;" icon="pi pi-times" title="Salir" />
 		</h2>
+		<p:commandButton action="#{orderBean.exit}" value="Salir"></p:commandButton>
 		<p:separator />
 		<h3>Nueva orden de compra</h3>
 		<p:outputLabel for="deliveryAddress" value="Direccíon de envío:" />
@@ -71,16 +70,15 @@
 							<f:selectItem itemLabel="USD" itemValue="USD" />
 							<f:selectItem itemLabel="EUR" itemValue="EUR" />
 
-						</p:selectOneMenu>
-						<p:commandButton action="#{orderBean.converter}" value="Convertir"></p:commandButton>
-						<h:outputText value="#{orderBean.valueConverter}"
-							style="font-weight: bold" /></td>
+						</p:selectOneMenu> <p:commandButton action="#{orderBean.converter}"
+							value="Convertir"></p:commandButton> <h:outputText
+							value="#{orderBean.valueConverter}" style="font-weight: bold" /></td>
 
 				</tr>
 
 			</tbody>
 		</table>
-		
+
 		<p:separator />
 
 		<p:commandButton action="#{orderBean.save}" value="Guardar"></p:commandButton>
@@ -125,9 +123,9 @@
 			<p:column headerText="Total">
 				<h:outputText value="#{order.total}" />
 			</p:column>
-			<p:column style="width:32px;text-align: center">
+			<p:column style="width:50px;text-align: center">
 				<p:commandButton oncomplete="PF('orderDetailDialog').show()"
-					icon="pi pi-search" title="View">
+					value="Ver" title="View">
 				</p:commandButton>
 			</p:column>
 		</p:dataTable>
