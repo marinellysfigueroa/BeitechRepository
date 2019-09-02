@@ -1,0 +1,140 @@
+<!DOCTYPE HTML>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta charset="utf-8" name="viewport"
+		content="width=device-width, initial-scale=1"
+		http-equiv="X-UA-Conpatible" />
+	<title>Prueba técnica MF</title>
+	<link rel="stylesheet" href="css/styles.css" />
+</h:head>
+<h:body>
+	<h:form>
+		<img src="img/logo.png" />
+		<h2 style="margin-top: 0">
+			Cliente:
+			<h:outputText value="#{customer.name}" style="font-weight: bold" />
+			<p:commandButton action="#{customerBean.exit}" id="exit"
+				style="margin-right:20px;" icon="pi pi-times" title="Salir" />
+		</h2>
+		<p:separator />
+		<h3>Nueva orden de compra</h3>
+		<p:outputLabel for="deliveryAddress" value="Direccíon de envío:" />
+		<p:inputText id="deliveryAddress" value="#{orderBean.deliveryAddress}"
+			queryDelay="750" minQueryLength="4" />
+		<p:separator />
+		<h3 style="margin-top: 0">Productos</h3>
+		<p:dataTable var="product" value="#{customer.productList}">
+			<p:column headerText="Código de producto">
+				<h:outputText value="#{product.productId}" />
+			</p:column>
+			<p:column headerText="Nombre del producto">
+				<h:outputText value="#{product.name}" />
+			</p:column>
+			<p:column headerText="Precio">
+				<h:outputText value="#{product.price}" />
+			</p:column>
+			<p:column headerText="Cantidad">
+				<p:spinner id="quantity" value="#{orderBean.quantity}" min="1"
+					max="5" />
+			</p:column>
+		</p:dataTable>
+		<p:separator />
+		<table style="aling: left">
+
+
+			<tbody>
+				<tr>
+					<td><h:outputLabel for="subtotal" value="Sub-Total:" /></td>
+					<td><p:inputNumber id="subtotal" value="#{orderBean.subtotal}"
+							disabled="disbled" /></td>
+
+				</tr>
+				<tr>
+					<td><h:outputLabel for="iva" value="Iva (16%):" /></td>
+					<td><p:inputNumber id="iva" value="#{orderBean.iva}"
+							disabled="disbled" /></td>
+
+				</tr>
+				<tr>
+					<td><h:outputLabel for="total" value="Total:" /></td>
+					<td><p:inputNumber id="total" value="#{orderBean.total}"
+							disabled="disbled" /></td>
+
+				</tr>
+				<tr>
+					<td><p:outputLabel for="currency" value="Moneda:" /></td>
+					<td><p:selectOneMenu id="currency"
+							value="#{orderBean.currency}" style="width:125px">
+							<f:selectItem itemLabel="USD" itemValue="USD" />
+							<f:selectItem itemLabel="EUR" itemValue="EUR" />
+
+						</p:selectOneMenu>
+						<p:commandButton action="#{orderBean.converter}" value="Convertir"></p:commandButton>
+						<h:outputText value="#{orderBean.valueConverter}"
+							style="font-weight: bold" /></td>
+
+				</tr>
+
+			</tbody>
+		</table>
+		
+		<p:separator />
+
+		<p:commandButton action="#{orderBean.save}" value="Guardar"></p:commandButton>
+		<p:separator />
+		<p:dialog header="Detalle de la orden de compra"
+			widgetVar="orderDetailDialog" modal="true" showEffect="fade"
+			hideEffect="fade" resizable="false">
+			<p:outputPanel id="orderDetail" style="text-align:center;">
+				<p:dataTable var="OrderDetail" value="#{order.orderDetailList}"
+					rows="5" paginator="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15">
+					<p:column headerText="Id">
+						<h:outputText value="#{OrderDetail.orderDetailId}" />
+					</p:column>
+					<p:column headerText="productDescription">
+						<h:outputText value="#{OrderDetail.productDescription}" />
+					</p:column>
+					<p:column headerText="price">
+						<h:outputText value="#{OrderDetail.price}" />
+					</p:column>
+					<p:column headerText="quantity">
+						<h:outputText value="#{OrderDetail.quantity}" />
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+		</p:dialog>
+		<h3>Historial de Ordenes de compra</h3>
+		<p:dataTable var="order" value="#{customer.orderList}" rows="5"
+			paginator="true"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15">
+			<p:column headerText="Número de orden">
+				<h:outputText value="#{order.orderId}" />
+			</p:column>
+			<p:column headerText="Fecha de creación">
+				<h:outputText value="#{order.creationDateString}" />
+			</p:column>
+			<p:column headerText="Dirección de envio">
+				<h:outputText value="#{order.deliveryAddress}" />
+			</p:column>
+			<p:column headerText="Total">
+				<h:outputText value="#{order.total}" />
+			</p:column>
+			<p:column style="width:32px;text-align: center">
+				<p:commandButton oncomplete="PF('orderDetailDialog').show()"
+					icon="pi pi-search" title="View">
+				</p:commandButton>
+			</p:column>
+		</p:dataTable>
+
+		<p:separator />
+
+
+	</h:form>
+</h:body>
+</html>
