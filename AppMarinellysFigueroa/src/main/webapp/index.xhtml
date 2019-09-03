@@ -36,10 +36,20 @@
 				<h:outputText value="#{product.price}" />
 			</p:column>
 			<p:column headerText="Cantidad">
-				<p:spinner id="quantity" value="#{orderBean.quantity}" min="1"
-					max="5" />
+				
+				<p:spinner id="quantity" value="#{product.quantity}" min="1" max="5">
+					<p:ajax event="valueChange" update="totalProduct" listener="#{orderBean.changeValue(product)}" />
+				</p:spinner>
+				
 			</p:column>
+			<p:column headerText="Total">
+				<h:outputText id="totalProduct" value="#{product.total}"
+					style="padding-left: 10px">	
+					</h:outputText>
+			</p:column>
+			
 		</p:dataTable>
+		
 		<p:separator />
 		<table style="aling: left">
 
@@ -86,28 +96,28 @@
 		<p:dialog header="Detalle de la orden de compra"
 			widgetVar="orderDetailDialog" modal="true" showEffect="fade"
 			hideEffect="fade" resizable="false">
-			<p:outputPanel id="orderDetail" style="text-align:center;">
-				<p:dataTable var="OrderDetail" value="#{order.orderDetailList}"
+			<p:outputPanel  id="orderDetail" style="text-align:center;">
+				<p:dataTable  var="od" value="#{order.orderDetailList}"
 					rows="5" paginator="true"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15">
 					<p:column headerText="Id">
-						<h:outputText value="#{OrderDetail.orderDetailId}" />
+						<h:outputText value="#{od.orderDetailId}" />
 					</p:column>
-					<p:column headerText="productDescription">
-						<h:outputText value="#{OrderDetail.productDescription}" />
+					<p:column headerText="Descripción del producto">
+						<h:outputText value="#{od.productDescription}" />
 					</p:column>
-					<p:column headerText="price">
-						<h:outputText value="#{OrderDetail.price}" />
+					<p:column headerText="Precio">
+						<h:outputText value="#{od.price}" />
 					</p:column>
-					<p:column headerText="quantity">
-						<h:outputText value="#{OrderDetail.quantity}" />
+					<p:column headerText="Cantidad">
+						<h:outputText value="#{od.quantity}" />
 					</p:column>
 				</p:dataTable>
 			</p:outputPanel>
 		</p:dialog>
 		<h3>Historial de Ordenes de compra</h3>
-		<p:dataTable var="order" value="#{customer.orderList}" rows="5"
+		<p:dataTable  var="order" value="#{customer.orderList}" rows="5"
 			paginator="true"
 			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 			rowsPerPageTemplate="5,10,15">
@@ -123,9 +133,10 @@
 			<p:column headerText="Total">
 				<h:outputText value="#{order.total}" />
 			</p:column>
-			<p:column style="width:50px;text-align: center">
-				<p:commandButton oncomplete="PF('orderDetailDialog').show()"
-					value="Ver" title="View">
+			<p:column style="width:60px;text-align: center">
+				<p:commandButton  oncomplete="PF('orderDetailDialog').show()"
+					value="Ver" title="Ver">
+					<f:setPropertyActionListener value="#{order.orderDetailList}" target="#{order.orderDetailList}" />
 				</p:commandButton>
 			</p:column>
 		</p:dataTable>

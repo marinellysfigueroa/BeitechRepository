@@ -39,6 +39,10 @@ public class Product {
     private List<Customer> customerList;
     @Transient
     private List<OrderDetail> orderDetailList;
+    @Transient
+    private Integer quantity;
+    @Transient
+    private Double total;
 
     public Product() {
     }
@@ -102,15 +106,38 @@ public class Product {
 		this.orderDetailList = orderDetailList;
 	}
 
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public Double getTotal() {
+		return total;
+	}
+
+	public void setTotal(Double total) {
+		this.total = total;
 	}
 
 	@Override
 	public String toString() {
 		return "Product [productId=" + productId + ", name=" + name + ", productDescription=" + productDescription
-				+ ", price=" + price + ", customerList=" + customerList + ", orderDetailList=" + orderDetailList + "]";
+				+ ", price=" + price + ", customerList=" + customerList + ", orderDetailList=" + orderDetailList
+				+ ", quantity=" + quantity + ", total=" + total + "]";
 	}
+
+	
+
+	
+
+	
 	
 
 }

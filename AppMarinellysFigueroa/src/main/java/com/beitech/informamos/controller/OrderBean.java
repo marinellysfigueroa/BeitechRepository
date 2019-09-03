@@ -31,6 +31,9 @@ public class OrderBean {
 	private Double total = 0.0;
 	private String currency="";
 	private Double valueConverter = 0.0;
+	private Product product;
+	private Double totalProduct = 0.0;
+	private Double price = 0.0;
 
 	public String getDeliveryAddress() {
 		return deliveryAddress;
@@ -102,6 +105,26 @@ public class OrderBean {
 	public void setValueConverter(Double valueConverter) {
 		this.valueConverter = valueConverter;
 	}
+	
+	
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+	
+	
+
+	public Double getTotalProduct() {
+		return totalProduct;
+	}
+
+	public void setTotalProduct(Double totalProduct) {
+		this.totalProduct = totalProduct;
+	}
 
 	public void  save() {
 		
@@ -147,10 +170,18 @@ public class OrderBean {
 	{
 		
 		CalculateTotalValue service = 	new CalculateTotalValueImplService().getCalculateTotalValueImplPort();
-		this.valueConverter=service.total(total, "USD");
-		Map<String, Object> sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
-		sessionMap.put("valueConverter", valueConverter);
+		valueConverter=service.total(total, "USD");
+		
 		
 		
 	}
+	public void changeValue(Product p) 
+	{	
+		p.setTotal(p.getPrice()*p.getQuantity());
+		totalProduct=p.getTotal();
+		subtotal=subtotal+totalProduct;
+		iva=subtotal+(subtotal*16/100);
+		total=subtotal+iva;
+	}
+	
 }
